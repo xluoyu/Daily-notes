@@ -1,0 +1,44 @@
+<html>
+  <pre>
+    call 原理
+    1. 在目标对象上新加一个属性指向原调用函数，实现this的更改
+    2. 调用目标对象上的新属性，传入参数，获取结果
+    3. 删除新属性，返回结果
+
+    apply 原理
+    同上
+
+    区别： 
+     * call的参数(除目标对象)可以任意数量
+     * apply的参数(除目标对象)只能是数组形式
+  </pre>
+</html>
+<script>
+  Function.prototype.myCall = function(obj, ...arg) {
+    obj.thatFunc = this
+    let res = obj.thatFunc(...arg)
+    delete obj.thatFunc
+    return res
+  }
+
+  Function.prototype.myApply = function(obj, arg) {
+    obj.thatFunc = this
+    if (!(arg instanceof Array)) {
+      throw 'CreateListFromArrayLike called on non-object'
+    }
+    let res = obj.thatFunc(...arg)
+    delete obj.thatFunc
+    return res
+  }
+
+  const my = {name: '小明'}
+  function say(age, sex) {
+    console.log(arguments)
+    return `my name is ${this.name}, age: ${age}, sex: ${sex}`
+  }
+  const res = say.myCall(my, 12, '男')
+  console.log(res)
+
+  const res2 = say.apply(my, {age: 12})
+  console.log(res2)
+</script>

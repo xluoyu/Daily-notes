@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  body{
+    background: #2d4168;
+  }
+  #content{
+    width: 300px;
+    margin: auto;
+  }
+</style>
+<body>
+  <div id="content"></div>
+</body>
+<script src="./DragAcr.js"></script>
+<script>
+  const dom = document.getElementById("content")
+  const a = new DragAcr({
+      el: dom,
+      startDeg: 0.7,
+      endDeg: 2.7,
+      outColor: '#6a707e',
+      color: ['#00ffc7', '#8Ab3ff'],
+      value: 80,
+      title: '亚健康',
+      duration: 1,
+      outLineWidth: 10,
+      slider: 8
+  })
+</script>
+</html>

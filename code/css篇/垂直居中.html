@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{margin: 0;padding: 0;}
+  body{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .box {
+    width: 300px;
+    height: 300px;
+    border: 1px solid blue;
+    margin: 20px;
+  }
+  .item {
+    width: 100px;
+    height: 100px;
+    background: coral;
+  }
+
+/* 第一种方法 */
+.box1{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* 第二种方法 */
+.box2{
+  position: relative;
+}
+.item2{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* 第三种方法 */
+.item3{
+  margin: 50% auto 0;
+  transform: translateY(-50%);
+}
+/* 第四种方法 */
+.box4{
+  position: relative;
+}
+.item4{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+</style>
+<body>
+  <div class="box box1">
+    <div class="item item1">
+      1.使用flex布局
+    </div>
+  </div>
+  <div class="box box2">
+    <div class="item item2">
+      2.定位+transform
+    </div>
+  </div>
+  <div class="box box3">
+    <div class="item item3">
+      3.margin+transform
+    </div>
+  </div>
+  <div class="box box4">
+    <div class="item item4">
+      4.定位+上下左右都为0+margin:auto
+    </div>
+  </div>
+</body>
+</html>

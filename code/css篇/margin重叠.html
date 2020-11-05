@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{margin: 0;padding: 0;}
+  .box1, .box2{
+    width: 100px;
+    height: 100px;
+    float: left;
+  }
+  .box1{
+    background: coral;
+    margin-right: 50px;
+  }
+  .box2{
+    background: cornflowerblue;
+    margin-left: 50px;
+  }
+  .main{
+    overflow: hidden; /* 产生BFC */
+  }
+</style>
+<body>
+  <div class="box1"></div>
+  <!-- <div class="main"> -->
+    <div class="box2"></div>
+  <!-- </div> -->
+</body>
+</html>

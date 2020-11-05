@@ -1,0 +1,36 @@
+<html>
+  <pre>
+    数组扁平化
+    1. 递归法
+    2. 堆栈(pop, push)/反向堆栈(shift, unshift)
+  </pre>
+</html>
+<script>
+  let arr = [1,2,[3,4,[5,6,[7,8,[9,10]]]]]
+  // 递归
+  Array.prototype.myFlat = function (rank = 1) {
+    return rank > 0 ? this.reduce((pre,cur) => {
+      return pre.concat(Array.isArray(cur) ? cur.myFlat(rank - 1) : cur)
+    }, []) : this.slice()
+  }
+  console.log(arr.myFlat())
+
+  // 反向栈
+function flatten(input) {
+  const stack = [...input];
+  const res = [];
+  while (stack.length) {
+    // 使用 pop 从 stack 中取出并移除值
+    const next = stack.shift();
+    if (Array.isArray(next)) {
+      // 使用 push 送回内层数组中的元素，不会改动原始输入
+      stack.unshift(...next);
+    } else {
+      res.push(next);
+    }
+  }
+  // 反转恢复原数组的顺序
+  return res;
+}
+console.log(flatten(arr))
+</script>

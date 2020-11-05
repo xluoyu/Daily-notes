@@ -1,0 +1,49 @@
+<script>
+class MinCoinChange {
+
+constructor(coins) {
+    this.coins = coins.sort((a, b) => b - a)
+    this.cache = {}
+}
+
+makeChange(amount) {
+    if (!amount) return []
+    if (this.cache[amount]) return this.cache[amount]
+    let min = [], newMin, newAmount
+    this.coins.forEach(coin => {
+        newAmount = amount - coin // 35
+        if (newAmount >= 0) {
+            newMin = this.makeChange(newAmount)
+            console.log(newMin)
+        }
+        if (newAmount >= 0 && 
+             (newMin.length < min.length - 1 || !min.length) && 
+             (newMin.length || !newAmount)) {
+            min = [coin].concat(newMin)
+        }
+    })
+    return (this.cache[amount] = min)
+}
+}
+
+// 贪心算法
+function MinCoinChange2(coins) {
+  let cache = {}
+  this.makeChange = function(amount) {
+    var change = [],
+        total = 0;
+    for (var i = coins.length - 1; i >= 0; i--) {
+      let coin = coins[i]
+      while (total + coin <= amount) {
+        change.push(coin)
+        total += coin
+      }
+    }
+    return change
+  }
+  
+}
+
+const rninCoinChange = new MinCoinChange([1, 5, 11])
+console.log(rninCoinChange.makeChange(15))
+</script>

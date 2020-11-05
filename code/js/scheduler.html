@@ -1,0 +1,92 @@
+<html>
+  <pre>
+    限制promise并行调度器
+    题目： 
+      const timeout = time => new Promise(resolve => {
+        setTimeout(resolve, time);
+      })
+        
+      const scheduler = new Scheduler();
+        
+      const addTask = (time,order) => {
+        scheduler.add(() => timeout(time).then(()=>console.log(order)))
+      }
+      
+      addTask(1000, '1');
+      addTask(500, '2');
+      addTask(300, '3');
+      addTask(400, '4')
+    需求结果：
+      2 3 1 4
+    执行流程
+    1. 其实1、2两个任务开始执行
+    2. 500ms时，2任务执行完毕，输出2，任务3开始执行
+    3. 800ms时，3任务执行完毕，输出3，任务4开始执行
+    4. 1000ms时，1任务执行完毕，输出1，此时只剩下4任务在执行
+    5. 1200ms时，4任务执行完毕，输出4
+    
+    解题思路：
+    1. 保证只同时运行两个promise
+    2. 创建等待数组、当前运行数变量
+    3. add函数，if (传入时判断运行数小于最大值并且没有等待函数时) {直接运行并运行数增加1} else {将函数添加进等待数组}
+    4. 为每个运行的函数添加then回调，目的：运行结束时运行数减1，从等待数组中去除第一个进行运行
+  </pre>
+</html>
+<script>
+class Scheduler {
+  constructor () {
+    this.waits = []
+    this.maxCount = 2
+    this.runCounts = 0
+  }
+  add(promiseCreator) {
+    if (this.runCounts < this.maxCount && this.waits.length == 0) {
+      promiseCreator().then(() => this.request())
+      this.runCounts++
+    } else {
+      this.waits.push(promiseCreator)
+    }
+  }
+  request() {
+    this.runCounts--
+    if (!this.waits.length) return
+    this.waits.shift()().then(() => this.request())
+    this.runCounts++
+  }
+  // add(promiseCreator) {
+  //   this.queue.push(promiseCreator)
+  // }
+  // taskStart() {
+  //   for (let i = 0; i < this.maxCount; i++) {
+  //     this.request()
+  //   }
+  // }
+  // request() {
+  //   if (!this.queue || !this.queue.length || this.runCounts >= this.maxCount) {
+  //     return;
+  //   }
+  //   this.runCounts++
+  //   this.queue.shift()().then(() => {
+  //     this.runCounts--
+  //     this.request()
+  //   })
+  // }
+}
+   
+const timeout = time => new Promise(resolve => {
+  setTimeout(resolve, time);
+})
+  
+const scheduler = new Scheduler();
+  
+const addTask = (time,order) => {
+  scheduler.add(() => timeout(time).then(()=>console.log(order)))
+}
+
+addTask(1000, '1');
+addTask(500, '2');
+addTask(300, '3');
+addTask(400, '4')
+
+// scheduler.taskStart()
+</script>

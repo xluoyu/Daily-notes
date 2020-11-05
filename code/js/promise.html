@@ -1,0 +1,104 @@
+<html>
+  <pre>
+    Promise 实现
+    1. promise 有三种状态 'pending'、'resolved'、'rejected'
+    2. 调用resolve或reject函数时都会改变状态
+    3. then函数需要传入两个参数，根据成功、失败的不同状态触发不同的函数
+    4. 当promise中有一步函数时，进入then还是pending状态，需将不同状态触发的函数保存至相应的数组中
+    5. 在异步状态的promise结束后调用resolve或reject，改变状态后便利触发成功或失败的回调函数组
+    6. then需要返回一个新的promise保证链式调用
+    7. 使用try catch对promise实例的代码块进行错误校验，发生错误时触发reject函数，调用表示失败的回调函数组
+    8. 当then中传入onRejected(表示错误的回调函数)时，发生错误会触发onRejected而忽略后面的catch，catch是子promise的rejected
+    
+    promise.all
+    1. 返回一个promise，便利传入的promise函数组，依次触发，保存每个结果
+    2. 便利结束后(判断当前index和函数组相等，保证异步函数调用结束)，触发resolve，返回结果数组
+  </pre>
+</html>
+<script>
+class MyPromise {
+  constructor(executor) {
+    this.status = 'pending'
+    this.success = undefined
+    this.error = undefined
+
+    this.onSuccessCallbacks = [] // 成功回调
+    this.onErrorCallbacks = [] // 失败回调
+
+    try {
+      executor(this.resolve.bind(this), this.reject.bind(this))
+    } catch (err) {
+      this.reject(err)
+    }
+  }
+  resolve (success) {
+    if (this.status === 'pending') {
+      this.status = 'resolved'
+      this.success = success
+      this.onSuccessCallbacks.forEach(item => item(success))
+    }
+  }
+  reject (error) {
+    if (this.status === 'pending') {
+      this.status = 'rejected'
+      this.error = error
+      this.onErrorCallbacks.forEach(item => item(error))
+    }
+  }
+  then (onResolved, onRejected) {
+    return new MyPromise((resolve, reject) => {
+      if (this.status === 'pending') {
+        this.onSuccessCallbacks.push(() => {
+          onResolved(this.success)
+        })
+        this.onErrorCallbacks.push(() => {
+          onRejected(this.error)
+        })
+      }
+      if (this.status === 'resolved') {
+        onResolved(this.success)
+      }
+      if (this.status === 'rejected') {
+        onRejected(this.error)
+      }
+    })
+  }
+  catch (onRejected) {
+    return this.then(null, onRejected)
+  }
+  all (promiseAll) {
+    return new MyPromise((resolve, reject) => {
+      const ans = []
+      let index = 0
+      promiseAll.forEach((item, i) => {
+        item.then(res => {
+          ans[i] = item // 保存结果
+          index++
+          if (index === promiseAll.length) {
+            resolve(ans)
+          }
+        }).catch(err => reject(err))
+      })
+    })
+  }
+}
+let a = true
+let promise = new MyPromise((resolve, reject) => {
+  console.log(1)
+  // throw '报错'
+  setTimeout(() => {
+    if (a) {
+      resolve('正确')
+    } else {
+      reject('错误')
+    }
+  }, 200)
+  console.log(2)
+})
+
+let test = promise.then(text => {
+  console.log(text)
+}, err => {
+  console.log(err)
+})
+</script>

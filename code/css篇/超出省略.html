@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{margin: 0;padding: 0;}
+  .box{
+    width: 150px;
+    height: 100px;
+    line-height: 20px;
+    font-size: 14px;
+    border: 1px solid blue;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: initial;
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+</style>
+<body>
+  <div class="box">
+    首先vue对于数据绑定使用的是数据劫持结合发布订阅模式，在2.6版本之前是通过Object.definePrototype来劫持各个属性的setter和getter方法，在数据变动时发布消息给订阅者，出发相应的回调。
+  </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+  <pre>
+    new的过程：
+    1. 创建一个新对象
+    2. 新对象的实例 = 传入对象的原型
+    3. 调用原对象（this指向新对象）获取返回值
+    4. 判断返回值，如果是对象则返回结果，否则返回新对象
+  </pre>
+</html>
+<script>
+  function myNew(obj, ...parameters) {
+    if (typeof obj != 'function') {
+      throw fn + ' is not a function'
+    }
+    let o = {}
+    o.__proto__ = obj.prototype
+    let res = obj.apply(o, parameters)
+    return typeof res === 'object' ? res : o
+  }
+
+  function A(options) {
+    this.name = options.name
+    this.age = options.age
+  }
+  A.prototype.getMore = function () {
+    return this.name + '明年' + (this.age + 1) + '岁'
+  }
+  let newA = new A({name: '小明', age: 14})
+  console.log(myNew(A, {name: '小明', age: 14}))
+
+</script>

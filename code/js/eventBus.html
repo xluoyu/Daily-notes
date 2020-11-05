@@ -1,0 +1,58 @@
+<html>
+  <pre>
+    eventsBus(发布订阅模式)原理
+    维护一个json对象(task)
+    1. on: 在task的对应name中添加 传入的fn
+    2. emit: 触发task对应name的 保存的所有fn
+    3. off: 删除task对应的name的对应的方法，没传方法则深处全部
+    4. once: 在task对应的name中添加一个触发后就删除的fn
+  </pre>
+</html>
+<script>
+class eventsBus{
+  constructor() {
+    this.task = {}
+  }
+  on(name, fn) {
+    if (!this.task[name]) {
+      this.task[name] = []
+    }
+    typeof fn === 'function' && this.task[name].push(fn)
+  }
+  emit(name, ...arg) {
+    let taskQueue = this.task[name]
+    if (taskQueue && taskQueue.length) {
+      taskQueue.forEach(item => {
+        item(...arg)
+      })
+    }
+  }
+  off(name, cb) {
+    let taskQueue = this.task[name]
+    if (taskQueue && taskQueue.length) {
+      if (typeof cb === 'function') {
+        let index = taskQueue.indexOf(cb)
+        index != -1 && taskQueue.splice(index, 1)
+      }
+    }
+  }
+  once(name, cb) {
+    let callback = (...arg) => {
+      cb(...arg)
+      this.off(name, callback)
+    }
+    typeof cb === 'function' && this.on(name, callback)
+  }
+  get() {
+    return this.task
+  }
+}
+
+const bus = new eventsBus()
+bus.once('test', function(a, b) {
+  console.log(a + b)
+})
+bus.emit('test', 10, 20)
+bus.emit('test', 20, 20)
+bus.emit('test', 30, 20)
+</script>

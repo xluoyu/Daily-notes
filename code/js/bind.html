@@ -1,0 +1,31 @@
+<html>
+  <pre>
+    bind的实现
+    1. 保存当前的this指向, 目标指向及参数
+    2. 返回一个函数
+    3. 返回函数中 使用apply或call改变this指向，拼接两个函数的参数
+  </pre>
+</html>
+<script>
+  function myBind(obj, ...arg) {
+    const that = this
+    if (typeof that !== 'function') {
+      throw that + ' is not a function'
+    }
+    return function () {
+      return that.apply(obj, arg.concat(Array.from(arguments)))
+    }
+  }
+Function.prototype.myBind = myBind
+
+  // 测试
+const me = { name: 'Jack' }
+function say(...options) {
+  console.log(options)
+  console.log(`My name is ${this.name || 'default'}`);
+}
+
+const res = say.myBind(me, 123123)
+res('小明', 'xiao')
+
+</script>

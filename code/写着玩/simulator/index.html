@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{margin: 0;padding: 0;}
+    .simulator{
+        border: 1px solid skyblue;
+        position: fixed;
+        left: calc(100% - 400px);
+        top: 40px;
+        width: 375px;
+        height: 700px;
+        resize: both;
+        overflow: auto;
+    }
+    .top{
+        height: 30px;
+        line-height: 30px;
+        cursor: move;
+        text-align: center;
+        background: #ccc;
+    }
+    .form-item{
+        display: block;
+        margin: 20px 0;
+    }
+</style>
+<body>
+    <div class="container">
+        <div id="form">
+            <label class="form-item">
+                <span>标题</span>
+                <input type="text" key="title">
+            </label>
+            <label class="form-item">
+                <span>副标题</span>
+                <input type="text" key="subTitle">
+            </label>
+            <div class="form-item">
+                <span>类型</span>
+                <label>
+                    <input type="radio" name="type" value="1" key="type"> 帽子
+                </label>
+                <label>
+                    <input type="radio" name="type" value="2" key="type"> 鞋子
+                </label>
+                <label>
+                    <input type="radio" name="type" value="3" key="type"> 上衣
+                </label>
+                <label>
+                    <input type="radio" name="type" value="4" key="type"> 裤子
+                </label>
+            </div>
+            <label class="form-item">
+                <span>状态</span>
+                <select name="" id="" key="status">
+                    <option value="">请选择</option>
+                    <option value="1">上架</option>
+                    <option value="2">下架</option>
+                    <option value="3">无库存</option>
+                </select>
+            </label>
+            <button id="submit">提交</button>
+        </div>
+        <div class="simulator">
+            <div class="top">...</div>
+            <div class="main">
+                <div id="simulator-title"></div>
+                <div id="simulator-subTitle"></div>
+                <div id="simulator-type"></div>
+                <div id="simulator-status"></div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        let status = false
+        let $top = document.querySelector(".top")
+        $top.addEventListener("mousedown", function(e){
+            let $main = document.querySelector(".simulator")
+            let leftDiff = e.offsetX
+            let topDiff = e.offsetY
+            status = true
+            document.addEventListener("mousemove", function(e){
+                if (!status) return
+                let left = e.clientX - leftDiff
+                let top = e.clientY - topDiff
+                $main.style.left = left + 'px'
+                $main.style.top = top + 'px'
+            })
+            document.addEventListener("mouseup", function(e){
+                status = false
+            })
+        });
+        data = {
+            title: "",
+            subTitle: '',
+            type: '',
+            status: ''
+        }
+        data.__proto__._data = Object.assign({}, data);
+        const TYPES = ['帽子', '鞋子', '上衣', '裤子']
+        const STATUS = ['上架', '下架', '无库存']
+        Object.keys(data).forEach((key, item) => {
+            Object.defineProperty(data, key, {
+                get: () => {
+                    return data._data[key]
+                },
+                set: (e) => {
+                    data._data[key] = e
+                    update(key, e)
+                }
+            })
+        });
+        function update(key, val) {
+            if (key == 'type') {
+                $(`#simulator-${key}`).text(TYPES[val - 1])
+            } else if (key == 'status') {
+                $(`#simulator-${key}`).text(STATUS[val - 1])
+            } else {
+                $(`#simulator-${key}`).text(val)
+            }
+        }
+        function render() {
+            let child = $(".simulator").children()
+            child.forEach(function(){
+                $(this).text()
+            })
+        }
+        $("input[type=text]").bind('input prototypechange',function(){
+            data[$(this).attr("key")] = $(this).val()
+        })
+        $("input[type=radio]").change(function(){
+            data[$(this).attr("key")] = $(this).val()
+        })
+        $("select").change(function(){
+            let val = $(this).val();
+            let key = $(this).attr('key')
+            data[key] = val
+        })
+        $("#submit").click(function(){
+            console.log(data)
+            console.log(JSON.stringify(data))
+        })
+    </script>
+</body>
+</html>
