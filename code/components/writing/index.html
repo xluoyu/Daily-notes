@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{margin: 0;padding: 0;}
+  .wrapper{
+    display: flex;
+    height: 100vh;
+  }
+  .wrapper>div{
+    height: 100%;
+  }
+  .container{
+    width: 850px;
+    position: relative;
+  }
+  .textarea{
+    width: 100%;
+    height: calc(100% - 60px);
+    border: none;
+    background: none;
+    outline: none;
+    resize: none;
+    box-sizing: border-box;
+    padding: 6px;
+  }
+  .setting{
+    position: absolute;
+    right: 120px;
+    bottom: 10px;
+  }
+  .button{
+    background: #328dca;
+    color: #fff;
+    border-radius: 6px;
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .setting .set-box{
+    position: absolute;
+    bottom: 50px;
+    background: #eee;
+    border-radius: 6px;
+    padding: 10px;
+    width: 190px;
+    box-sizing: border-box;
+  }
+  .set-item{
+    height: 40px;
+    line-height: 40px;
+  }
+  .set-item label{
+    font-size: 14px;
+    margin-right: 6px;
+  }
+  .set-item input[type=number]{
+    width: 60px;
+  }
+  .run{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .space{
+    width: 20px;
+    writing-mode: vertical-lr;
+    text-align: center;
+    line-height: 34px;
+    cursor: ew-resize;
+    user-select: none;
+  }
+  .space:hover{
+    background: #eee;
+  }
+  .screen{
+    flex: 1;
+    background: #333;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+  .screen pre{
+    display: inline;
+  }
+  .screen pre::after{
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 16px;
+    background: #fff;
+    animation: twinkle 1s infinite;
+    vertical-align: bottom;
+  }
+  @keyframes twinkle {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+</style>
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="setting">
+        <div class="button">设置</div>
+        <div class="set-box" style="display: none;">
+          <div class="set-item">
+            <label for="fontSize">字体大小</label>
+            <input type="number" id="fontSize" value="16">
+          </div>
+          <div class="set-item">
+            <label for="fontColor">字体颜色</label>
+            <input type="color" id="fontColor" value="#ffffff">
+          </div>
+          <div class="set-item">
+            <label for="backColor">背景颜色</label>
+            <input type="color" id="backColor" value="#333333">
+          </div>
+        </div>
+      </div>
+      <div class="button run">run</div>
+      <textarea class="textarea"></textarea>
+    </div>
+    <div class="space">...</div>
+    <div class="screen">
+      <pre></pre>
+    </div>
+  </div>
+</body>
+<script>
+  const $container = document.querySelector(".container");
+  const $screen = document.querySelector(".screen");
+  const $setButton = document.querySelector(".setting .button");
+  const $setBox = document.querySelector(".setting .set-box");
+  const $run = document.querySelector(".run");
+
+  $setButton.addEventListener("click", function() {
+    $setBox.style.display = $setBox.style.display == 'none' ? 'block' : 'none'
+  })
+
+  $run.addEventListener("click", function() {
+    let color = document.querySelector("#fontColor").value
+    let fontSize = document.querySelector("#fontSize").value
+    let backColor = document.querySelector("#backColor").value
+    let text = document.querySelector(".textarea").value
+    $screen.style.color = color
+    $screen.style.fontSize = fontSize
+    $screen.style.background = backColor
+    let i = 0
+    let max = text.length
+    let timer = setInterval(() => {
+      if (i >= max) {
+        clearInterval(timer)
+      }
+      requestAnimationFrame(() => {
+        $screen.querySelector('pre').innerHTML = text.substring(0, i)
+      });
+      i++
+    }, 100)
+  })
+
+  // 移动分割线，改变空间宽度
+  ;(() => {
+    let left = sessionStorage.getItem('mainWidth') || 850
+    $container.style.width = left + 'px';
+    const $space = document.querySelector(".space")
+    let status = false
+    const maxW = 1000
+    const minW = 300
+    $space.addEventListener("mousedown", function(e) {
+      let leftDiff = e.offsetX
+      status = true
+      document.addEventListener("mousemove", function(e){
+          if (!status) return
+          left = e.clientX - leftDiff
+          left = left > maxW ? maxW : left < minW ? minW : left
+            $container.style.width = left + 'px'
+          sessionStorage.setItem('mainWidth', left)
+      })
+      document.addEventListener("mouseup", function(e){
+          status = false
+      })
+    })
+  })()
+
+</script>
+</html>
