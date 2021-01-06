@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        perspective: 1px;
+        padding: 0;
+        height: calc(100vh - 300px);
+        overflow: auto;
+    }
+    .box{
+        height: 1280px;
+        transform-style: preserve-3d;
+        position: relative;
+    }
+    .background{
+        position: absolute;
+        transform: translate3d(-50%, -120px, -1px) scale(2);
+    }
+
+</style>
+<body>
+    <div class="container">
+        <div class="box">
+            <img src="https://www.zhangxinxu.com/study/201503/mobile_1_iphone.jpg" alt="">
+            <div class="background"></div>
+        </div>
+    </div>
+</body>
+</html>

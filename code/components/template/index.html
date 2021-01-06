@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="button">切换数据</button>
+    <div id="app"></div>
+    <div class="test">
+        <p>13</p>
+        <p>12</p>
+    </div>
+    <button id="addTest">添加</button>
+</body>
+<template id="template" rule='@'>
+    <h3>${title}</h3>
+    <div @if="status == 1">状态1</div>
+    <div @if="status == 2">状态2</div>
+    <ul>
+        <li @for="(item, index) in list" key="${item.id}">${index}. ${item.value}</li>
+    </ul>
+</template>
+<script src="./template.js"></script>
+<script>
+    let data1 = {
+        title: '文本1', 
+        status: 1,
+        list: [
+            {id: 1, value: '这是文版'},
+            {id: 2, value: 'azc'},
+            {id: 3, value: '的风格'},
+            {id: 4, value: '从v你们'},
+        ]
+    }
+
+    let data2 = {
+        title: '文本2',
+        status: 2,
+        list: [
+            {id: 1, value: '这是文版'},
+            {id: 2, value: 'azc'},
+            {id: 3, value: '的风格'},
+            {id: 4, value: '从v你们'},
+            {id: 5, value: '新的！！'}
+        ]
+    }
+
+    let myTemplate = new Template('#app')
+    myTemplate.mount(data1)
+
+    let type = 1
+    const button = document.querySelector('#button')
+    button.addEventListener('click', () => {
+        if (type == 1) {
+            myTemplate.mount(data2)
+            type =  2
+        } else {
+            myTemplate.mount(data1)
+            type =  1
+        }
+    })
+    
+    const test = document.querySelector('.test')
+    const list = Array.from(test.children)
+    let newDom = document.createElement('p')
+    newDom.textContent = 'test'
+    list.push(newDom)
+    list[0].textContent = 'title'
+    console.log(list)
+    const addTest = addEventListener('click', function () {
+        test.append(newDom)
+    })
+</script>
+</html>
