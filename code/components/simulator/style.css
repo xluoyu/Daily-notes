@@ -1,0 +1,32 @@
+.simulator{
+  border: 1px solid skyblue;
+  position: fixed;
+  left: calc(100% - 400px);
+  top: 40px;
+  width: 375px;
+  height: 630px;
+}
+.simulator .top{
+  height: 30px;
+  line-height: 30px;
+  cursor: move;
+  text-align: center;
+  background: #ccc;
+}
+.simulator .main{
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+.simulator .main::-webkit-scrollbar{
+  display: none;
+}
+#shopDetail-app .banner img{
+  width: 100%;
+}
+#shopDetail-app .content{
+  height: 1200px;
+  width: 100%;
+  background: skyblue;
+}

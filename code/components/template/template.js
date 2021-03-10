@@ -173,6 +173,7 @@ const diffNodes = function (oldNodes, newNodes, patches, oldNode) {
         })
     } else {
         // 比较旧的每一项
+        console.log(oldChildren)
         oldChildren.forEach((child, idx) => {
             if (!child.isEqualNode(newChildren[idx])) {
                 walk(child, newChildren[idx], patches)

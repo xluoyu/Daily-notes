@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+var massage = function(nums) {
+  let dp = []
+  dp[0] = 0
+  dp[1] = 0
+  for (let i = 2; i < nums.length + 2; i++) {
+    console.log(dp)
+    console.log(nums[i - 2])
+    dp[i] = Math.max(dp[i - 2] + nums[i - 2], dp[i - 1])
+  }
+  console.log(dp)
+
+  return dp[nums.length + 1]
+};
+let res = massage([1,2,1,1])
+console.log(res)
+</script>
+</html>

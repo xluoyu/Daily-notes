@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script src="./data.js"></script>
+<script>
+  let data = getData()
+  console.log(data.length)
+  function handleList () {
+    let arr = {}
+    data.forEach(item => {
+      let name = item.name
+      if (arr[name]) {
+        arr[name].push(item)
+      } else {
+        arr[name] = [item]
+      }
+    });
+    console.log(Object.keys(arr).map(a => {return {name: a, value:arr[a]}}))
+  }
+
+  function handleList2 () {
+    let arr = []
+    data.forEach(item => {
+      let name = item.name
+      let index = arr.findIndex(e => e.name == name)
+      if (index == -1) {
+        arr.push({
+          name,
+          value: [item]
+        })
+      } else {
+        arr[index].value.push(item)
+      }
+    })
+    console.log(arr)
+  }
+
+  
+  console.time('第一种方案')
+  handleList()
+  console.timeEnd('第一种方案')
+
+  console.time('第二种方案')
+  handleList2()
+  console.timeEnd('第二种方案')
+</script>
+</html>

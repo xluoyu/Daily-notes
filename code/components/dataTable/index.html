@@ -4,25 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <div id="tables"></div>
 </body>
+<script src="./data.js"></script>
 <script src="./timeTables.js"></script>
 <script>
 let timeTable = new TimeTables({
     el: '#tables',
-    date: '2021-01',
-    data: [
-        {id: 1, date: '2020-04-05', title: '小明', status: 1},
-        {id: 2, date: '2020-04-06', title: '小明', status: 2},
-        {id: 3, date: '2020-04-07', title: '小明', status: 3, remarks: '生病'}
-    ],
+    date: '2020-05',
+    data: getData(),
     head: 'date',
     left: 'title',
     template: (data, td, tr) => {
         return  `<div class="item" id="item-${data.id}">
-            <div class="item-main">${data.status == 1 ? '上班' : data.status == 2 ? '休息' : data.remarks}</div>
+            <div class="item-main">${data.status == 1 ? '上班' : data.status == 2 ? '休息' : '请假'}</div>
             <div class="item-footer">
                 <span>上班</span>
                 <span>休息</span>

@@ -4,7 +4,7 @@
     1. promise 有三种状态 'pending'、'resolved'、'rejected'
     2. 调用resolve或reject函数时都会改变状态
     3. then函数需要传入两个参数，根据成功、失败的不同状态触发不同的函数
-    4. 当promise中有一步函数时，进入then还是pending状态，需将不同状态触发的函数保存至相应的数组中
+    4. 当promise中有异步函数时，进入then还是pending状态，需将不同状态触发的函数保存至相应的数组中
     5. 在异步状态的promise结束后调用resolve或reject，改变状态后便利触发成功或失败的回调函数组
     6. then需要返回一个新的promise保证链式调用
     7. 使用try catch对promise实例的代码块进行错误校验，发生错误时触发reject函数，调用表示失败的回调函数组

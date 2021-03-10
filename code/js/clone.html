@@ -1,0 +1,23 @@
+<script>
+let a = {
+  name: '小明',
+  data: {
+    age: 12
+  }
+}
+
+function clone(obj) {
+  let res = {}
+  Object.keys(obj).forEach(key => {
+    res[key] = obj[key]
+  })
+  return res
+}
+
+let b = clone(a)
+a.name = '小红'
+a.data.age = 16
+console.log('a', a)
+console.log('b', b)
+
+</script>
