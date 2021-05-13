@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  let obj = [
+    {id: 22, name: '100以上,100以下'}
+  ]
+  let list = obj.reduce((pre, cur) => {
+    if (cur.name.indexOf(',') != -1) {
+      let names = cur.name.split(',')
+      names.forEach(name => {
+        pre.push(Object.assign({}, cur, {name}))
+        // console.log(Object.assign(cur, {name}))
+        // pre = pre.concat([Object.assign(cur, {name})])
+      })
+    } else {
+      pre.push(cur)
+    }
+    return pre
+  }, [])
+  console.log(list)
+</script>
+</html>
